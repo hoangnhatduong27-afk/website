@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Tố Hữu - Nhóm 2</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-paper: #ffffcc;
+            --bg-card: #ffffff;
+            --text-main: #1C1917;
+            --text-muted: #57534E;
+            --accent-primary: #cc33ff;
+            
+            --color-pink: #ff99ff;
+            --color-coral: #ff9999;
+            --color-blue: #3399ff;
+            --color-purple: #cc33ff;
+            
+            --border-light: #e6e6b8;
+            --border-dark: #332E2B;
+            --nav-bg: rgba(255, 255, 204, 0.95);
+            --font-serif: 'Merriweather', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --shadow-subtle: 0 10px 25px -10px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 35px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-paper: #1c1c14;
+            --bg-card: #28281e;
+            --text-main: #f5f5e6;
+            --text-muted: #b8b894;
+            --border-light: #3a3a2a;
+            --border-dark: #f5f5e6;
+            --nav-bg: rgba(28, 28, 20, 0.95);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent-primary);
+            width: 0%;
+            z-index: 2000;
+            transition: width 0.1s linear, background-color 0.3s ease;
+        }
+
+        .top-bar {
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-picker-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        .color-swatch-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .color-swatch:hover, .color-swatch.active {
+            transform: scale(1.25);
+            box-shadow: 0 0 0 2px var(--text-main);
+        }
+
+        .swatch-pink { background-color: var(--color-pink); }
+        .swatch-coral { background-color: var(--color-coral); }
+        .swatch-blue { background-color: var(--color-blue); }
+        .swatch-purple { background-color: var(--color-purple); }
+
+        .theme-toggle {
+            background: var(--accent-primary);
+            border: none;
+            color: #ffffff;
+            padding: 5px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+
+        header.masthead {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 3px double var(--accent-primary);
+            position: relative;
+            transition: border-color 0.3s ease;
+        }
+
+        .masthead-tag {
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            margin-bottom: 16px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 4px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-primary);
+            transition: all 0.3s ease;
+        }
+
+        .masthead h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.8rem, 6vw, 4.2rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: var(--accent-primary);
+            position: relative;
+            z-index: 1;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .masthead p.subtitle {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(0.85rem, 1.8vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 100%;
+            margin: 0 auto;
+            line-height: 1.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        nav.nav-sticky {
+            position: sticky;
+            top: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent-primary);
+            z-index: 1000;
+            padding: 12px 0;
+            transition: border-color 0.3s ease;
+        }
+
+        nav .nav-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        nav .nav-menu a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background-color: var(--accent-primary);
+            transition: width 0.3s ease, background-color 0.3s ease;
+            border-radius: 2px;
+        }
+
+        nav .nav-menu a:hover {
+            color: var(--accent-primary);
+        }
+
+        nav .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .hero-gallery-section {
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+
+        .hero-grid-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            background: var(--bg-card);
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid var(--accent-primary);
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Thêm hiệu ứng trỏ chuột phóng to ảnh */
+        .gallery-item img, .sidebar-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+            cursor: zoom-in;
+            transition: opacity 0.2s ease;
+        }
+
+        .gallery-item img:hover {
+            opacity: 0.9;
+        }
+
+        .sidebar-img {
+            height: auto;
+            max-height: 300px;
+        }
+
+        .gallery-caption {
+            font-size: 0.8rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* LIGHTBOX POPUP PHÓNG TO ẢNH */
+        #lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        #lightbox-modal.active {
+            display: flex;
+        }
+
+        #lightbox-img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 8px;
+            border: 3px solid #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+
+        #lightbox-caption {
+            color: #ffffff;
+            margin-top: 16px;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 700px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-primary);
+        }
+
+        .hero-quote-box {
+            max-width: 850px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border-left: 6px solid var(--accent-primary);
+            box-shadow: var(--shadow-subtle);
+            transition: border-color 0.3s ease;
+        }
+
+        .hero-quote-text {
+            font-family: var(--font-serif);
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            line-height: 1.6;
+            color: var(--text-main);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .hero-quote-author {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            transition: color 0.3s ease;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-bottom: 70px;
+        }
+
+        section.editorial-block {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--accent-primary);
+            padding-bottom: 8px;
+            transition: border-color 0.3s ease;
+        }
+
+        .section-number {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 3px solid var(--accent-primary);
+            box-shadow: var(--shadow-hover);
+            margin-top: 20px;
+            background: #000;
+            transition: border-color 0.3s ease;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .bio-lead {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            margin-bottom: 24px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            border-left: 3px solid var(--accent-primary);
+            margin-top: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bg-paper);
+            border: 3px solid var(--accent-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+            font-family: var(--font-serif);
+            transition: color 0.3s ease;
+        }
+
+        .timeline-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .poetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .poetry-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poetry-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-primary);
+            transition: background-color 0.3s ease;
+        }
+
+        .poetry-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .poetry-card-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .poetry-card-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .poetry-verse {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            background: var(--bg-paper);
+            padding: 14px 18px;
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 12px;
+            transition: border-color 0.3s ease;
+        }
+
+        .poetry-analysis {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .works-table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .works-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 580px;
+        }
+
+        .works-table th {
+            background: rgba(255, 255, 204, 0.8);
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--accent-primary);
+            padding: 14px 18px;
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--border-light);
+            transition: color 0.3s ease;
+        }
+
+        .works-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        .works-table td:nth-child(2) {
+            white-space: nowrap;
+        }
+
+        .works-table tr:hover {
+            background-color: var(--bg-paper);
+        }
+
+        .work-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .work-year {
+            display: inline-block;
+            background: var(--bg-paper);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border: 1px solid var(--accent-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .quiz-card {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow-subtle);
+            transition: border-color 0.3s ease;
+        }
+
+        .quiz-question-box {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question-title {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .quiz-btn {
+            background: var(--bg-paper);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            padding: 12px 18px;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+        }
+
+        .quiz-btn:hover {
+            border-color: var(--accent-primary);
+            background: #ffffff;
+        }
+
+        .quiz-btn.correct {
+            background-color: #d1e7dd !important;
+            border-color: #0f5132 !important;
+            color: #0f5132 !important;
+            font-weight: 700;
+        }
+
+        .quiz-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #842029 !important;
+            color: #842029 !important;
+        }
+
+        .quiz-footer {
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+        }
+
+        .quiz-score {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+        }
+
+        .quiz-reset-btn {
+            background: var(--accent-primary);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .quiz-reset-btn:hover {
+            opacity: 0.9;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .sidebar-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--accent-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-light);
+            font-size: 0.9rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-main);
+            display: block;
+        }
+
+        .info-value {
+            color: var(--text-muted);
+        }
+
+        .award-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-paper);
+            border: 1px solid var(--accent-primary);
+            border-radius: 6px;
+            margin-top: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .award-icon {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            transition: color 0.3s ease;
+        }
+
+        .award-text h4 {
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .award-text p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        footer.editorial-footer {
+            background: #1a1a00;
+            color: #cccc99;
+            padding: 50px 0 24px;
+            margin-top: 60px;
+            border-top: 4px solid var(--accent-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: #ffffcc;
+            margin-bottom: 10px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333300;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <!-- LIGHTBOX MODAL (Phóng to ảnh) -->
+    <div id="lightbox-modal" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Phóng to ảnh">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <div class="top-bar">
+        <div class="container">
+            <span>&#10054; Nhóm 2 &#10054;</span>
+            
+            <div class="color-picker-wrapper">
+                <span class="color-picker-label">Màu điểm nhấn:</span>
+                <div class="color-swatch-group">
+                    <div class="color-swatch swatch-purple active" onclick="changeAccentColor('#cc33ff', this)" title="Tím rực (#cc33ff)"></div>
+                    <div class="color-swatch swatch-pink" onclick="changeAccentColor('#ff99ff', this)" title="Hồng mềm (#ff99ff)"></div>
+                    <div class="color-swatch swatch-coral" onclick="changeAccentColor('#ff9999', this)" title="San hô (#ff9999)"></div>
+                    <div class="color-swatch swatch-blue" onclick="changeAccentColor('#3399ff', this)" title="Xanh dương (#3399ff)"></div>
+                </div>
+            </div>
+
+            <button class="theme-toggle" id="theme-toggle-btn">Chế độ đêm</button>
+        </div>
+    </div>
+
+    <header class="masthead">
+        <div class="container">
+            <span class="masthead-tag">Nhà thơ Cách mạng Vĩ đại</span>
+            <h1>TỐ HỮU</h1>
+            <p class="subtitle">“Cờ đầu của thơ ca cách mạng Việt Nam — Người gieo vần của lịch sử và lý tưởng cộng sản”</p>
+        </div>
+    </header>
+
+    <nav class="nav-sticky">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#tieu-su">Tiểu Sử</a></li>
+                <li><a href="#tu-lieu">Tư Liệu Video</a></li>
+                <li><a href="#phong-cach">Phong Cách</a></li>
+                <li><a href="#tap-tho">Tập Thơ</a></li>
+                <li><a href="#tac-pham">Tác Phẩm</a></li>
+                <li><a href="#bac-ho">Thơ Về Bác</a></li>
+                <li><a href="#game-trac-nghiem">Game Trắc Nghiệm</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container hero-gallery-section">
+        <div class="hero-grid-images">
+            <div class="gallery-item">
+                <img src="/images/anh Bac Ho.jpg" alt="Tố Hữu trò chuyện cùng Bác Hồ" onclick="openLightbox(this)">
+                <div class="gallery-caption">Tố Hữu trò chuyện thân mật bên Bác Hồ (Bấm để phóng to)</div>
+            </div>
+            <div class="gallery-item">
+                <img src="/images/Tho va anh.jpg" alt="Chân dung nhà thơ Tố Hữu và bài thơ tưởng niệm" onclick="openLightbox(this)">
+                <div class="gallery-caption">Chân dung Tố Hữu và bài thơ tưởng niệm (Bấm để phóng to)</div>
+            </div>
+            <div class="gallery-item">
+                <img src="/images/di but.jpg" alt="Di bút của nhà thơ Tố Hữu" onclick="openLightbox(this)">
+                <div class="gallery-caption">Di bút nổi tiếng của Tố Hữu (Bấm để phóng to)</div>
+            </div>
+            <div class="gallery-item">
+                <img src="/images/ban thao.jpg" alt="Bản thảo bài thơ Bác ơi" onclick="openLightbox(this)">
+                <div class="gallery-caption">Bản thảo bài thơ "Bác ơi!" (1999) (Bấm để phóng to)</div>
+            </div>
+        </div>
+
+        <div class="hero-quote-box">
+            <p class="hero-quote-text">
+                “Suốt đời, tôi phấn đấu vì sự nghiệp độc lập dân tộc và lý tưởng cộng sản. Cùng với hoạt động cách mạng, tôi làm thơ cũng vì sự nghiệp cách mạng. Đối với tôi: Trăm năm duyên kiếp Đảng và Thơ.”
+            </p>
+            <div class="hero-quote-author">— Nhà thơ Tố Hữu</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-grid">
+            
+            <main>
+                <section id="tieu-su" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">01.</span>
+                        <h2 class="section-title">Tiểu Sử & Con Đường Cách Mạng</h2>
+                    </div>
+                    
+                    <p class="bio-lead">
+                        Nhà thơ Tố Hữu tên thật là <strong>Nguyễn Kim Thành</strong> (1920 – 2002), quê tại làng Phù Lai, xã Quảng Thọ, huyện Quảng Điền, tỉnh Thừa Thiên Huế. Sinh ra trong một gia đình nhà nho nghèo giàu truyền thống văn hóa dân gian, xứ Huế trầm mặc đã bồi đắp tâm hồn thơ ông từ thuở thiếu thời.
+                    </p>
+
+                    <div class="timeline">
+                        <div class="timeline-event">
+                            <div class="timeline-year">1937 – 1938</div>
+                            <div class="timeline-desc">Gia nhập Đoàn thanh niên Dân chủ (1937) và chính thức được kết nạp vào Đảng Cộng sản Đông Dương khi mới 18 tuổi (1938).</div>
+                        </div>
+                        <div class="timeline-event">
+                            <div class="timeline-year">1939 – 1942</div>
+                            <div class="timeline-desc">Bị thực dân Pháp bắt giam qua nhiều nhà lao. Vượt ngục thành công tháng 3/1942, trở về gây dựng cơ sở Đảng tại Thanh Hóa.</div>
+                        </div>
+                        <div class="timeline-event">
+                            <div class="timeline-year">1945 – 1975</div>
+                            <div class="timeline-desc">Trở thành lãnh đạo chủ chốt trên mặt trận tư tưởng, văn hóa của Đảng suốt hai cuộc kháng chiến chống Pháp và chống Mỹ.</div>
+                        </div>
+                        <div class="timeline-event">
+                            <div class="timeline-year">1976 – 1986</div>
+                            <div class="timeline-desc">Ủy viên Bộ Chính trị, từng giữ cương vị Phó Chủ tịch Thường trực Hội đồng Bộ trưởng.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="tu-lieu" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">02.</span>
+                        <h2 class="section-title">Phim Tư Liệu Về Nhà Thơ Tố Hữu</h2>
+                    </div>
+                    <p style="color: var(--text-muted);">
+                        Thước phim tư liệu tổng quan về cuộc đời, sự nghiệp cách mạng và di sản thơ ca đồ sộ của nhà thơ Tố Hữu:
+                    </p>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/PaS9osKcC4E" title="Tư liệu về Nhà thơ Tố Hữu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </section>
+
+                <section id="phong-cach" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">03.</span>
+                        <h2 class="section-title">Phong Cách Nghệ Thuật</h2>
+                    </div>
+
+                    <p style="margin-bottom: 20px;">
+                        Thơ Tố Hữu là sự kết hợp nhuần nhuyễn giữa <strong>chất trữ tình chính trị sâu sắc</strong> và <strong>bản sắc dân tộc đậm đà</strong>, được ví như cuốn biên niên sử bằng thơ của lịch sử cách mạng Việt Nam.
+                    </p>
+
+                    <div class="poetry-grid">
+                        <div class="poetry-card">
+                            <span class="poetry-card-tag">Đặc trưng 01</span>
+                            <h3 class="poetry-card-title">Trữ Tình - Chính Trị</h3>
+                            <p class="poetry-analysis">
+                                Mọi biến cố lịch sử và lý tưởng cộng sản đều chuyển hóa thành cảm hứng trữ tình đằm thắm, bộc lộ tình cảm lớn, lẽ sống lớn và niềm vui lớn của cả dân tộc.
+                            </p>
+                        </div>
+                        <div class="poetry-card">
+                            <span class="poetry-card-tag">Đặc trưng 02</span>
+                            <h3 class="poetry-card-title">Bản Sắc Dân Tộc</h3>
+                            <p class="poetry-analysis">
+                                Vận dụng bậc thầy các thể thơ truyền thống (lục bát, thất ngôn). Nhạc điệu ngọt ngào, đậm đà ca dao dân gian, ngôn ngữ mộc mạc giàu sức truyền cảm.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="tap-tho" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">04.</span>
+                        <h2 class="section-title">Hành Trình 7 Tập Thơ Lớn</h2>
+                    </div>
+
+                    <div class="works-table-wrapper">
+                        <table class="works-table">
+                            <thead>
+                                <tr>
+                                    <th>Tập Thơ</th>
+                                    <th>Thời Gian</th>
+                                    <th>Giá Trị Cốt Lõi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="work-title">Từ ấy</div></td>
+                                    <td><span class="work-year">1937–1946</span></td>
+                                    <td>Niềm vui giác ngộ lý tưởng cộng sản và khí thế Cách mạng Tháng Tám.</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="work-title">Việt Bắc</div></td>
+                                    <td><span class="work-year">1946–1954</span></td>
+                                    <td>Bản hùng ca - tình ca về cuộc kháng chiến chống Pháp trường kỳ.</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="work-title">Gió lộng</div></td>
+                                    <td><span class="work-year">1955–1961</span></td>
+                                    <td>Khí thế xây dựng CNXH miền Bắc và hướng về miền Nam ruột thịt.</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="work-title">Ra trận</div></td>
+                                    <td><span class="work-year">1962–1971</span></td>
+                                    <td>Khúc anh hùng ca hưởng ứng cuộc kháng chiến chống Mỹ cứu nước.</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="work-title">Máu và Hoa</div></td>
+                                    <td><span class="work-year">1972–1977</span></td>
+                                    <td>Chặng đường cuối chống Mỹ và niềm vui vỡ ùa ngày đại thắng 1975.</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="work-title">Một tiếng đàn</div></td>
+                                    <td><span class="work-year">1992</span></td>
+                                    <td>Chiêm nghiệm sâu sắc về cuộc đời và những đổi thay trong thời kỳ mới.</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="work-title">Ta với Ta</div></td>
+                                    <td><span class="work-year">1999</span></td>
+                                    <td>Thắt chặt niềm tin sắt đá vào lý tưởng và hành trình cống hiến.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="tac-pham" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">05.</span>
+                        <h2 class="section-title">Tác Phẩm Tiêu Biểu</h2>
+                    </div>
+
+                    <div class="poetry-grid">
+                        <div class="poetry-card">
+                            <span class="poetry-card-tag">Tập "Từ ấy" (1938)</span>
+                            <h3 class="poetry-card-title">Bài thơ "Từ ấy"</h3>
+                            <div class="poetry-verse">
+                                “Từ ấy trong tôi bừng nắng hạ<br>
+                                Mặt trời chân lý chói qua tim<br>
+                                Hồn tôi là một vườn hoa lá<br>
+                                Rất đậm hương và rộn tiếng chim...”
+                            </div>
+                            <p class="poetry-analysis">Tuyên ngôn về lẽ sống của người thanh niên yêu nước khi giác ngộ lý tưởng cách mạng.</p>
+                        </div>
+                        <div class="poetry-card">
+                            <span class="poetry-card-tag">Tập "Việt Bắc" (1954)</span>
+                            <h3 class="poetry-card-title">Trích đoạn "Việt Bắc"</h3>
+                            <div class="poetry-verse">
+                                “Nhớ gì như nhớ người yêu<br>
+                                Trăng lên đầu núi, nắng chiều lưng nương<br>
+                                Nhớ sao lớp học i tờ<br>
+                                Đồng khuya bếp lửa xám mờ hơi sương...”
+                            </div>
+                            <p class="poetry-analysis">Khúc hát nghĩa tình thủy chung giữa cán bộ cách mạng và đồng bào chiến khu Việt Bắc.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="bac-ho" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">06.</span>
+                        <h2 class="section-title">Tình Cảm Viết Về Bác Hồ</h2>
+                    </div>
+
+                    <p style="margin-bottom: 20px;">
+                        Những vần thơ Tố Hữu viết về Chủ tịch Hồ Chí Minh là những trang viết xúc động bậc nhất, khắc họa hình ảnh Bác vô cùng giản dị, gần gũi mà vĩ đại.
+                    </p>
+
+                    <div class="poetry-card">
+                        <span class="poetry-card-tag">Trích "Việt Bắc" (1954)</span>
+                        <h3 class="poetry-card-title">Hình Ảnh Bác Ở Chiến Khu</h3>
+                        <div class="poetry-verse">
+                            “Nhớ Ông Cụ mắt sáng ngời<br>
+                            Áo nâu túi vải đẹp tươi lạ thường<br>
+                            Nhớ Người những sớm tinh sương<br>
+                            Ung dung yên ngựa trên đường suối reo...”
+                        </div>
+                        <p class="poetry-analysis">Khắc họa thần thái ung dung, giản dị mà vĩ đại của Bác giữa thiên nhiên Việt Bắc bao la.</p>
+                    </div>
+                </section>
+
+                <section id="game-trac-nghiem" class="editorial-block">
+                    <div class="section-header">
+                        <span class="section-number">07.</span>
+                        <h2 class="section-title">Game Thử Tài Kiến Thức</h2>
+                    </div>
+                    <p style="margin-bottom: 20px;">Hãy kiểm tra mức độ hiểu biết của bạn về nhà thơ Tố Hữu qua các câu hỏi trắc nghiệm dưới đây:</p>
+
+                    <div class="quiz-card">
+                        <div id="quiz-container">
+                        </div>
+                        <div class="quiz-footer">
+                            <span class="quiz-score" id="quiz-score-display">Điểm số: 0 / 4</span>
+                            <button class="quiz-reset-btn" onclick="resetQuiz()">Làm Lại Game</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <aside>
+                <div class="sidebar-card">
+                    <img src="/images/chan dung.jpg" alt="Chân dung Tố Hữu" class="sidebar-img" onclick="openLightbox(this)">
+                    <h3 class="sidebar-title">Thông Tin Tác Giả</h3>
+                    <ul class="info-list">
+                        <li>
+                            <span class="info-label">Tên khai sinh</span>
+                            <span class="info-value">Nguyễn Kim Thành</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Bút danh</span>
+                            <span class="info-value">Tố Hữu</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Năm sinh - Mất</span>
+                            <span class="info-value">04/10/1920 – 09/12/2002</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Quê quán</span>
+                            <span class="info-value">Quảng Điền, Thừa Thiên Huế</span>
+                        </li>
+                    </ul>
+
+                    <div class="award-badge">
+                        <div class="award-icon">★</div>
+                        <div class="award-text">
+                            <h4>Giải Thưởng Hồ Chí Minh</h4>
+                            <p>Đợt I (1996) về Văn học - Nghệ thuật.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <img src="/images/tuoi gia.jpg" alt="Tố Hữu tuổi già" class="sidebar-img" onclick="openLightbox(this)">
+                    <h3 class="sidebar-title">Đánh Giá Lịch Sử</h3>
+                    <blockquote style="font-family: var(--font-serif); font-style: italic; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                        “Thơ Tố Hữu là tiếng nói toàn tâm toàn ý vì cách mạng, là bản anh hùng ca và cuốn biên niên sử hào hùng của dân tộc Việt Nam trong thế kỷ XX.”
+                    </blockquote>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <footer class="editorial-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>TỐ HỮU (1920 – 2002)</h3>
+                    <p>Trang chuyên đề giới thiệu tiểu sử, phong cách nghệ thuật và sự nghiệp thi ca của nhà thơ cờ đầu nền văn học cách mạng Việt Nam.</p>
+                </div>
+                <div>
+                    <h4 style="color: #ffffcc; margin-bottom: 10px; font-family: var(--font-serif);">Chuyên Mục</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.8;">• Thơ Trữ tình - Chính trị<br>• Thi ca và Cách mạng</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&#10054; Hoàng Nhật Dương &#10054;</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // Theme Switcher (Dark / Light)
+        const toggleBtn = document.getElementById('theme-toggle-btn');
+        const htmlElement = document.documentElement;
+
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                htmlElement.setAttribute('data-theme', 'dark');
+                toggleBtn.textContent = 'Chế độ Sáng';
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                toggleBtn.textContent = 'Chế độ Đêm';
+            }
+        });
+
+        // Accent Color Switcher
+        function changeAccentColor(colorHex, swatchElement) {
+            document.documentElement.style.setProperty('--accent-primary', colorHex);
+            const swatches = document.querySelectorAll('.color-swatch');
+            swatches.forEach(swatch => swatch.classList.remove('active'));
+            if(swatchElement) swatchElement.classList.add('active');
+        }
+
+        // ================= LIGHTBOX HÀM PHÓNG TO ẢNH =================
+        function openLightbox(imgElement) {
+            const modal = document.getElementById('lightbox-modal');
+            const modalImg = document.getElementById('lightbox-img');
+            const captionText = document.getElementById('lightbox-caption');
+            
+            modal.classList.add('active');
+            modalImg.src = imgElement.src;
+            captionText.textContent = imgElement.alt || "Ảnh tư liệu Tố Hữu";
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.remove('active');
+        }
+
+        // ================= LOGIC GAME TRẮC NGHIỆM =================
+        const quizData = [
+            {
+                question: "1. Tên khai sinh của nhà thơ Tố Hữu là gì?",
+                options: ["A. Nguyễn Kim Thành", "B. Nguyễn Sen", "C. Nguyễn Sinh Cung", "D. Phạm Văn Đồng"],
+                correct: 0
+            },
+            {
+                question: "2. Tập thơ đầu tay đánh dấu chặng đường giác ngộ lý tưởng cách mạng của Tố Hữu là tập thơ nào?",
+                options: ["A. Việt Bắc", "B. Từ ấy", "C. Gió lộng", "D. Ra trận"],
+                correct: 1
+            },
+            {
+                question: "3. Tố Hữu quê ở tỉnh/thành nào?",
+                options: ["A. Nghệ An", "B. Hà Tĩnh", "C. Thừa Thiên Huế", "D. Quảng Bình"],
+                correct: 2
+            },
+            {
+                question: "4. Tố Hữu được nhà nước trao tặng Giải thưởng Hồ Chí Minh về Văn học - Nghệ thuật vào năm nào?",
+                options: ["A. 1986", "B. 1996", "C. 2000", "D. 2002"],
+                correct: 1
+            }
+        ];
+
+        let score = 0;
+        let answeredCount = 0;
+
+        function loadQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            score = 0;
+            answeredCount = 0;
+            updateScoreDisplay();
+
+            quizData.forEach((q, qIndex) => {
+                const qBox = document.createElement('div');
+                qBox.className = 'quiz-question-box';
+
+                const title = document.createElement('div');
+                title.className = 'quiz-question-title';
+                title.textContent = q.question;
+                qBox.appendChild(title);
+
+                const optsBox = document.createElement('div');
+                optsBox.className = 'quiz-options';
+
+                q.options.forEach((opt, oIndex) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'quiz-btn';
+                    btn.textContent = opt;
+                    btn.onclick = () => selectAnswer(qIndex, oIndex, btn, optsBox);
+                    optsBox.appendChild(btn);
+                });
+
+                qBox.appendChild(optsBox);
+                container.appendChild(qBox);
+            });
+        }
+
+        function selectAnswer(qIndex, oIndex, selectedBtn, optsBox) {
+            const allBtns = optsBox.querySelectorAll('.quiz-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            const correctIndex = quizData[qIndex].correct;
+
+            if (oIndex === correctIndex) {
+                selectedBtn.classList.add('correct');
+                score++;
+            } else {
+                selectedBtn.classList.add('incorrect');
+                allBtns[correctIndex].classList.add('correct');
+            }
+
+            answeredCount++;
+            updateScoreDisplay();
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('quiz-score-display').textContent = `Điểm số: ${score} / ${quizData.length}`;
+        }
+
+        function resetQuiz() {
+            loadQuiz();
+        }
+
+        window.onload = loadQuiz;
+    </script>
+</body>
+</html>
